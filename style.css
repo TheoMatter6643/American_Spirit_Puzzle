@@ -69,7 +69,7 @@ body {
       background-repeat: no-repeat;
       border-radius: 6px;
       cursor: grab;
-      background: #4c6fff;
+      background: transparent;
       color: white;
       display: flex;
       align-items: center;
