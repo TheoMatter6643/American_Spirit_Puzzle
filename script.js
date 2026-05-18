@@ -7,8 +7,8 @@ const pieceHeight = 200;
 let draggedPiece = null;
 
 function snapToGrid(x, y) {
-  const col = Math.round(x / pieceWidth);
-  const row = Math.round(y / pieceHeight);
+  const col = Math.max(0, Math.min(5, Math.round(x / pieceWidth)));
+  const row = Math.max(0, Math.min(3, Math.round(y / pieceHeight)));
 
   return {
     x: col * pieceWidth,
