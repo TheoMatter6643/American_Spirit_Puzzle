@@ -32,8 +32,8 @@ body {
 
 /* ⭐ SMALL PIECES */
 .piece {
-  width: 150px;
-  height: 150px;
+  width: 120px;
+  height: 120px;
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -44,16 +44,16 @@ body {
 /* ⭐ SMALL BOARD */
 .board {
   position: relative;
-  width: calc(150px * 6);  /* 6 columns */
-  height: calc(150px * 4); /* 4 rows */
+  width: calc(120px * 6);  /* 6 columns */
+  height: calc(120px * 4); /* 4 rows */
   border: 3px solid #ccc;
   background: white;
 }
 
 /* Slots only used for correctness checking */
 .slot {
-  width: 150px;
-  height: 150px;
+  width: 120px;
+  height: 120px;
   border: 2px dashed #bbb;
   border-radius: 4px;
   background: white;
