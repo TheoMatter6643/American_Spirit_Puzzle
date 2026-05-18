@@ -1,97 +1,88 @@
-   const piecesContainer = document.getElementById("pieces");
-    const board = document.getElementById("board");
-    const status = document.getElementById("status");
-    const resetBtn = document.getElementById("resetBtn");
+const piecesContainer = document.getElementById("pieces");
+const status = document.getElementById("status");
+const resetBtn = document.getElementById("resetBtn");
 
-    let draggedPiece = null;
+let draggedPiece = null;
 
-    function setStatus(message, type = "") {
-      status.textContent = message;
-      status.className = "";
-      if (type) status.classList.add(type);
-    }
+function setStatus(msg, type = "") {
+  status.textContent = msg;
+  status.className = type;
+}
 
-    function initDragAndDrop() {
-      const pieces = document.querySelectorAll(".piece");
-      const slots = document.querySelectorAll(".slot");
+function shufflePieces() {
+  const pieces = Array.from(document.querySelectorAll(".piece"));
 
-      pieces.forEach(piece => {
-        piece.addEventListener("dragstart", e => {
-          draggedPiece = piece;
-          e.dataTransfer.setData("text/plain", piece.dataset.id);
-        });
+  // Fisher-Yates shuffle
+  for (let i = pieces.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [pieces[i], pieces[j]] = [pieces[j], pieces[i]];
+  }
 
-        piece.addEventListener("dragend", () => {
-          draggedPiece = null;
-        });
-      });
+  // Re-append in new order
+  pieces.forEach(piece => piecesContainer.appendChild(piece));
+}
 
-      slots.forEach(slot => {
-        slot.addEventListener("dragover", e => {
-          e.preventDefault();
-        });
+function initDragAndDrop() {
+  const pieces = document.querySelectorAll(".piece");
+  const slots = document.querySelectorAll(".slot");
 
-        slot.addEventListener("drop", e => {
-          e.preventDefault();
-          if (!draggedPiece) return;
+  pieces.forEach(piece => {
+    piece.addEventListener("dragstart", e => {
+      draggedPiece = piece;
+      e.dataTransfer.setData("text/plain", piece.dataset.id);
+    });
 
-          // Only allow one piece per slot
-          if (slot.querySelector(".piece")) {
-            setStatus("That slot already has a piece.", "error");
-            return;
-          }
+    piece.addEventListener("dragend", () => draggedPiece = null);
+  });
 
-          slot.appendChild(draggedPiece);
+  slots.forEach(slot => {
+    slot.addEventListener("dragover", e => e.preventDefault());
 
-          const pieceId = draggedPiece.dataset.id;
-          const slotId = slot.dataset.id;
+    slot.addEventListener("drop", e => {
+      e.preventDefault();
+      if (!draggedPiece) return;
 
-          if (pieceId === slotId) {
-            slot.classList.remove("incorrect");
-            slot.classList.add("correct");
-            setStatus("Nice! That piece is correct.", "success");
-          } else {
-            slot.classList.remove("correct");
-            slot.classList.add("incorrect");
-            setStatus("Wrong spot. Try again or move it.", "error");
-          }
-
-          checkWin();
-        });
-      });
-    }
-
-    function checkWin() {
-      const slots = document.querySelectorAll(".slot");
-      let allCorrect = true;
-
-      slots.forEach(slot => {
-        const piece = slot.querySelector(".piece");
-        if (!piece || piece.dataset.id !== slot.dataset.id) {
-          allCorrect = false;
-        }
-      });
-
-      if (allCorrect) {
-        setStatus("Puzzle complete! 🎉", "success");
+      if (slot.querySelector(".piece")) {
+        setStatus("That slot already has a piece.", "error");
+        return;
       }
-    }
 
-    function resetPuzzle() {
-      const slots = document.querySelectorAll(".slot");
-      const pieces = document.querySelectorAll(".piece");
+      slot.appendChild(draggedPiece);
 
-      slots.forEach(slot => {
-        slot.classList.remove("correct", "incorrect");
-      });
+      const correct = draggedPiece.dataset.id === slot.dataset.id;
 
-      pieces.forEach(piece => {
-        piecesContainer.appendChild(piece);
-      });
+      slot.classList.remove("correct", "incorrect");
+      slot.classList.add(correct ? "correct" : "incorrect");
 
-      setStatus("");
-    }
+      setStatus(correct ? "Correct!" : "Wrong spot.", correct ? "success" : "error");
 
-    resetBtn.addEventListener("click", resetPuzzle);
+      checkWin();
+    });
+  });
+}
 
-    initDragAndDrop();
+function checkWin() {
+  const slots = document.querySelectorAll(".slot");
+  for (const slot of slots) {
+    const piece = slot.querySelector(".piece");
+    if (!piece || piece.dataset.id !== slot.dataset.id) return;
+  }
+  setStatus("Puzzle complete! 🎉", "success");
+}
+
+function resetPuzzle() {
+  const slots = document.querySelectorAll(".slot");
+  const pieces = document.querySelectorAll(".piece");
+
+  slots.forEach(slot => slot.classList.remove("correct", "incorrect"));
+  pieces.forEach(piece => piecesContainer.appendChild(piece));
+
+  shufflePieces(); // shuffle again on reset
+  setStatus("");
+}
+
+resetBtn.addEventListener("click", resetPuzzle);
+
+// Shuffle once on page load
+shufflePieces();
+initDragAndDrop();
