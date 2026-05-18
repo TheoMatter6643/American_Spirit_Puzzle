@@ -40,12 +40,10 @@ body {
 }
 
 .board {
-  position: relative;
   width: calc(120px * 6);
   height: calc(200px * 4);
-  border: 3px solid #ccc;
-  background: white;
 }
+
 
 button {
   padding: 8px 14px;
