@@ -1,47 +1,37 @@
 body {
-      font-family: system-ui, sans-serif;
-      background: #f2f2f7;
-      margin: 0;
-      padding: 20px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 20px;
-    }
+  font-family: system-ui, sans-serif;
+  background: #f2f2f7;
+  margin: 0;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
 
-    h1 {
-      margin: 0;
-      font-size: 24px;
-    }
-
-    #container {
+#container {
   display: flex;
   flex-direction: row;
   align-items: flex-start;
   gap: 20px;
 }
 
-
-    .column {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-
-    .column h2 {
-      margin: 0 0 6px;
-      font-size: 18px;
-    }
-
-    .board {
-  position: relative;
-  width: calc(150px * 6);
-  height: calc(150px * 4);
-  border: 3px solid #ccc;
-  background: white;
+.column {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
-    .piece {
+.pieces {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+/* ⭐ SMALL PIECES */
+.piece {
   width: 150px;
   height: 150px;
   background-size: cover;
@@ -51,6 +41,16 @@ body {
   cursor: grab;
 }
 
+/* ⭐ SMALL BOARD */
+.board {
+  position: relative;
+  width: calc(150px * 6);  /* 6 columns */
+  height: calc(150px * 4); /* 4 rows */
+  border: 3px solid #ccc;
+  background: white;
+}
+
+/* Slots only used for correctness checking */
 .slot {
   width: 150px;
   height: 150px;
@@ -59,42 +59,22 @@ body {
   background: white;
 }
 
+.slot.correct {
+  border-color: #2ecc71;
+  background: #e9f9f0;
+}
 
-    .slot.correct {
-      border-color: #2ecc71;
-      background: #e9f9f0;
-    }
+.slot.incorrect {
+  border-color: #e74c3c;
+  background: #fdecea;
+}
 
-    .slot.incorrect {
-      border-color: #e74c3c;
-      background: #fdecea;
-    }
-
-    #status {
-      font-size: 16px;
-      min-height: 20px;
-    }
-
-    #status.success {
-      color: #2ecc71;
-      font-weight: 600;
-    }
-
-    #status.error {
-      color: #e74c3c;
-      font-weight: 600;
-    }
-
-    button {
-      padding: 8px 14px;
-      border-radius: 6px;
-      border: none;
-      background: #4c6fff;
-      color: white;
-      font-size: 14px;
-      cursor: pointer;
-    }
-
-    button:hover {
-      background: #3b57d6;
-    }
+button {
+  padding: 8px 14px;
+  border-radius: 6px;
+  border: none;
+  background: #4c6fff;
+  color: white;
+  font-size: 14px;
+  cursor: pointer;
+}
