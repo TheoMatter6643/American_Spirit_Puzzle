@@ -1,33 +1,8 @@
-const piecesContainer = document.getElementById("pieces");
-const status = document.getElementById("status");
-const resetBtn = document.getElementById("resetBtn");
-
-let draggedPiece = null;
-
-function setStatus(msg, type = "") {
-  status.textContent = msg;
-  status.className = type;
-}
-
-function shufflePieces() {
-  const pieces = Array.from(document.querySelectorAll(".piece"));
-
-  // Fisher-Yates shuffle
-  for (let i = pieces.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [pieces[i], pieces[j]] = [pieces[j], pieces[i]];
-  }
-
-  // Re-append in new order
-  pieces.forEach(piece => piecesContainer.appendChild(piece));
-}
 const board = document.getElementById("board");
 const piecesContainer = document.getElementById("pieces");
 
 const pieceWidth = 120;
-const pieceHeight = 120;
-
-
+const pieceHeight = 200;
 
 let draggedPiece = null;
 
@@ -52,7 +27,7 @@ function init() {
       e.dataTransfer.setData("text/plain", "");
     });
 
-    piece.addEventListener("dragend", e => {
+    piece.addEventListener("dragend", () => {
       draggedPiece = null;
     });
   });
