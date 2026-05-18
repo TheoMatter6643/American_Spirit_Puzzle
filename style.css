@@ -30,7 +30,6 @@ body {
   overflow-y: auto;
 }
 
-/* ⭐ SMALL PIECES */
 .piece {
   width: 120px;
   height: 120px;
@@ -41,16 +40,14 @@ body {
   cursor: grab;
 }
 
-/* ⭐ SMALL BOARD */
 .board {
   position: relative;
-  width: calc(120px * 6);  /* 6 columns */
-  height: calc(120px * 4); /* 4 rows */
+  width: calc(120px * 6);
+  height: calc(120px * 4);
   border: 3px solid #ccc;
   background: white;
 }
 
-/* Slots only used for correctness checking */
 .slot {
   width: 120px;
   height: 120px;
