@@ -15,11 +15,12 @@ body {
     }
 
     #container {
-      display: flex;
-      gap: 40px;
-      flex-wrap: wrap;
-      justify-content: center;
-    }
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 20px;
+}
+
 
     .column {
       display: flex;
@@ -48,8 +49,8 @@ body {
 
     .board {
   position: relative;
-  width: calc(435px * 6);   /* 6 columns */
-  height: calc(438px * 4);  /* 4 rows */
+  width: calc(150px * 6);
+  height: calc(150px * 4);
   border: 3px solid #ccc;
   background: white;
 }
@@ -63,33 +64,23 @@ body {
     }
 
     .piece {
-      width: 435px;
-      height: 438px;
-      background-size: cover;
-      background-position: center;
-      background-repeat: no-repeat;
-      border-radius: 6px;
-      cursor: grab;
-      background: transparent;
-      color: white;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: grab;
-      user-select: none;
-      font-weight: 600;
-    }
+  width: 150px;
+  height: 150px;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  border-radius: 4px;
+  cursor: grab;
+}
 
-    .slot {
-      width: 435px;
-      height: 438px;
-      border: 2px dashed #bbb;
-      border-radius: 6px;
-      background: #ffffff;
-      border: 2px dashed #bbb;
-      background: white;
-      position: relative;
-    }
+.slot {
+  width: 150px;
+  height: 150px;
+  border: 2px dashed #bbb;
+  border-radius: 4px;
+  background: white;
+}
+
 
     .slot.correct {
       border-color: #2ecc71;
