@@ -33,20 +33,6 @@ body {
       font-size: 18px;
     }
 
-    .pieces, .board {
-      display: grid;
-      gap: 8px;
-    }
-
-    .pieces {
-      grid-template-columns: repeat(2, 100px);
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      max-height: 90vh;
-      overflow-y: auto;
-    }
-
     .board {
   position: relative;
   width: calc(150px * 6);
@@ -54,14 +40,6 @@ body {
   border: 3px solid #ccc;
   background: white;
 }
-
-
-    .piece, .slot {
-      width: 100px;
-      height: 100px;
-      border-radius: 6px;
-      box-sizing: border-box;
-    }
 
     .piece {
   width: 150px;
@@ -90,14 +68,6 @@ body {
     .slot.incorrect {
       border-color: #e74c3c;
       background: #fdecea;
-    }
-
-    .slot-label {
-      position: absolute;
-      bottom: 4px;
-      right: 6px;
-      font-size: 11px;
-      color: #888;
     }
 
     #status {
