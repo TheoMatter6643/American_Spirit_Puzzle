@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Image Puzzle</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <h1>Drag the puzzle pieces into the correct spots</h1>
+  <div id="status"></div>
+
+  <div id="container">
+    <div class="column">
+      <h2>Pieces</h2>
+      <div class="pieces" id="pieces">
+
+        <!-- Replace filenames with your own -->
+        <div class="piece" draggable="true" data-id="1" style="background-image: url('piece1.jpg');"></div>
+        <div class="piece" draggable="true" data-id="2" style="background-image: url('piece2.jpg');"></div>
+        <div class="piece" draggable="true" data-id="3" style="background-image: url('piece3.jpg');"></div>
+        <div class="piece" draggable="true" data-id="4" style="background-image: url('piece4.jpg');"></div>
+        <div class="piece" draggable="true" data-id="5" style="background-image: url('piece5.jpg');"></div>
+        <div class="piece" draggable="true" data-id="6" style="background-image: url('piece6.jpg');"></div>
+
+      </div>
+
+      <button id="resetBtn">Reset</button>
+    </div>
+
+    <div class="column">
+      <h2>Board</h2>
+      <div class="board" id="board">
+
+        <!-- Slots with faint outlines -->
+        <div class="slot" data-id="1" style="background-image: url('piece1.jpg');"></div>
+        <div class="slot" data-id="2" style="background-image: url('piece2.jpg');"></div>
+        <div class="slot" data-id="3" style="background-image: url('piece3.jpg');"></div>
+        <div class="slot" data-id="4" style="background-image: url('piece4.jpg');"></div>
+        <div class="slot" data-id="5" style="background-image: url('piece5.jpg');"></div>
+        <div class="slot" data-id="6" style="background-image: url('piece6.jpg');"></div>
+      </div>
+    </div>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>
