@@ -47,12 +47,13 @@ body {
     }
 
     .board {
-      grid-template-columns: repeat(3, 100px);
-      display: grid;
-      grid-template-columns: repeat(6, 435px);
-      grid-template-rows: repeat(4, 438px);
-      gap: 8px;
-    }
+  position: relative;
+  width: calc(435px * 6);   /* 6 columns */
+  height: calc(438px * 4);  /* 4 rows */
+  border: 3px solid #ccc;
+  background: white;
+}
+
 
     .piece, .slot {
       width: 100px;
