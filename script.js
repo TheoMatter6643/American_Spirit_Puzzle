@@ -90,8 +90,9 @@ initDragAndDrop();
 const board = document.getElementById("board");
 const piecesContainer = document.getElementById("pieces");
 
-const pieceWidth = 150;
-const pieceHeight = 150;
+const pieceWidth = 120;
+const pieceHeight = 120;
+
 
 
 let draggedPiece = null;
