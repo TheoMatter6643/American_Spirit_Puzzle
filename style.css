@@ -33,37 +33,18 @@ body {
 .piece {
   width: 120px;
   height: 200px;
-  aspect-ratio: auto;
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
+  cursor: grab;
 }
-
 
 .board {
   position: relative;
   width: calc(120px * 6);
-  height: calc(120px * 4);
+  height: calc(200px * 4);
   border: 3px solid #ccc;
   background: white;
-}
-
-.slot {
-  width: 120px;
-  height: 120px;
-  border: 2px dashed #bbb;
-  border-radius: 4px;
-  background: white;
-}
-
-.slot.correct {
-  border-color: #2ecc71;
-  background: #e9f9f0;
-}
-
-.slot.incorrect {
-  border-color: #e74c3c;
-  background: #fdecea;
 }
 
 button {
