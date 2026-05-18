@@ -1,0 +1,117 @@
+body {
+      font-family: system-ui, sans-serif;
+      background: #f2f2f7;
+      margin: 0;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 24px;
+    }
+
+    #container {
+      display: flex;
+      gap: 40px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .column {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .column h2 {
+      margin: 0 0 6px;
+      font-size: 18px;
+    }
+
+    .pieces, .board {
+      display: grid;
+      gap: 8px;
+    }
+
+    .pieces {
+      grid-template-columns: repeat(2, 100px);
+    }
+
+    .board {
+      grid-template-columns: repeat(3, 100px);
+    }
+
+    .piece, .slot {
+      width: 100px;
+      height: 100px;
+      border-radius: 6px;
+      box-sizing: border-box;
+    }
+
+    .piece {
+      background: #4c6fff;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: grab;
+      user-select: none;
+      font-weight: 600;
+    }
+
+    .slot {
+      border: 2px dashed #bbb;
+      background: white;
+      position: relative;
+    }
+
+    .slot.correct {
+      border-color: #2ecc71;
+      background: #e9f9f0;
+    }
+
+    .slot.incorrect {
+      border-color: #e74c3c;
+      background: #fdecea;
+    }
+
+    .slot-label {
+      position: absolute;
+      bottom: 4px;
+      right: 6px;
+      font-size: 11px;
+      color: #888;
+    }
+
+    #status {
+      font-size: 16px;
+      min-height: 20px;
+    }
+
+    #status.success {
+      color: #2ecc71;
+      font-weight: 600;
+    }
+
+    #status.error {
+      color: #e74c3c;
+      font-weight: 600;
+    }
+
+    button {
+      padding: 8px 14px;
+      border-radius: 6px;
+      border: none;
+      background: #4c6fff;
+      color: white;
+      font-size: 14px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #3b57d6;
+    }
