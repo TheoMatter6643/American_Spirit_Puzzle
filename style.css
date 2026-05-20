@@ -35,13 +35,12 @@ body {
 }
 
 .piece {
-  width: 120px;
-  height: 200px;
-  background-size: contain;
-  background-repeat: no-repeat;
+  width: 150px;
+  height: 150px;
+  background-size: cover;
   background-position: center;
+  background-repeat: no-repeat;
   cursor: grab;
-  border: none;
 }
 
 .board {
