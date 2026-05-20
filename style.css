@@ -27,7 +27,7 @@ body {
   flex-direction: column;
   gap: 10px;
   width: 150px;
-  height: 105px;
+  height: 150px;
   overflow-y: auto;
   background-size: contain;
   background-repeat: no-repeat;
