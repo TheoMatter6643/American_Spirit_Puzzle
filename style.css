@@ -28,6 +28,10 @@ body {
   gap: 10px;
   max-height: 90vh;
   overflow-y: auto;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  image-rendering: crisp-edges;
 }
 
 .piece {
@@ -37,6 +41,7 @@ body {
   background-repeat: no-repeat;
   background-position: center;
   cursor: grab;
+  border: none;
 }
 
 .board {
