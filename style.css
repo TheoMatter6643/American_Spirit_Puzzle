@@ -46,8 +46,8 @@ body {
 
 .board {
   position: relative;
-  width: 1600px;
-  height: 2400px;
+  width: 900px;
+  height: 600px;
   border: 3px solid #ccc;
   background-image: url('Puzzle/puzzle_300x200_6x4.png');
   background-size: cover;
