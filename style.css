@@ -49,8 +49,11 @@ body {
   width: calc(120px * 6);
   height: calc(200px * 4);
   border: 3px solid #ccc;
-  background: white;
+  background-image: url('Puzzle/puzzle_300x200_6x4.png');
+  background-size: cover;
+  opacity: 0.15; /* faint */
 }
+
 
 
 button {
