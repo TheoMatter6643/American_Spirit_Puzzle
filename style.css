@@ -37,10 +37,14 @@ body {
 .piece {
   width: 150px;
   height: 150px;
-  background-size: cover;
-  background-position: center;
+  background-size: contain;
   background-repeat: no-repeat;
+  background-position: center;
   cursor: grab;
+}
+
+.pieces .piece {
+  flex: 0 0 auto;
 }
 
 .board {
