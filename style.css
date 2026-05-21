@@ -26,12 +26,14 @@ body {
   display: flex;
   flex-direction: column;
   gap: 10px;
-  max-width: 90vw;
+  max-height: 90vh;
   overflow-y: auto;
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-position: center;
-  image-rendering: crisp-edges;
+}
+
+/* Sidebar pieces: stacked neatly, not overlapping */
+.pieces .piece {
+  position: relative;
+  flex: 0 0 auto;
 }
 
 .piece {
@@ -43,21 +45,25 @@ body {
   cursor: grab;
 }
 
-.pieces .piece {
-  flex: 0 0 auto;
-}
-
+/* Board where pieces overlap like real jigsaw */
 .board {
   position: relative;
   width: 900px;
   height: 600px;
   border: 3px solid #ccc;
-  background-image: url('Puzzle/puzzle_300x200_6x4.png');
-  background-size: cover;
-  opacity: 0.15; /* faint */
+  background: white;
+  overflow: visible; /* allow pieces to hang over edges if needed */
 }
 
+/* When on the board, pieces will be absolutely positioned and can overlap */
+.board .piece {
+  position: absolute;
+  z-index: 10;
+}
 
+.board .piece.dragging {
+  z-index: 9999;
+}
 
 button {
   padding: 8px 14px;
