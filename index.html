@@ -1,53 +1,49 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>Image Puzzle</title>
+  <meta charset="UTF-8">
+  <title>Square Puzzle</title>
   <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
-  <h1>Drag the puzzle pieces into the correct spots</h1>
+
+  <h1>Square Puzzle</h1>
   <div id="status"></div>
 
   <div id="container">
 
     <div class="column">
       <h2>Pieces</h2>
-      <div class="pieces" id="pieces">
+      <div id="pieces" class="pieces">
+        <!-- 24 pieces -->
+        <!-- You can replace text with images later -->
+        <div class="piece" draggable="true" data-id="r1c1">1</div>
+        <div class="piece" draggable="true" data-id="r1c2">2</div>
+        <div class="piece" draggable="true" data-id="r1c3">3</div>
+        <div class="piece" draggable="true" data-id="r1c4">4</div>
+        <div class="piece" draggable="true" data-id="r1c5">5</div>
+        <div class="piece" draggable="true" data-id="r1c6">6</div>
 
-        <!-- ROW 1 -->
-        <div class="piece" draggable="true" data-id="r1c1" style="background-image: url('Puzzle/piece_r1_c1.png');"></div>
-        <div class="piece" draggable="true" data-id="r1c2" style="background-image: url('Puzzle/piece_r1_c2.png');"></div>
-        <div class="piece" draggable="true" data-id="r1c3" style="background-image: url('Puzzle/piece_r1_c3.png');"></div>
-        <div class="piece" draggable="true" data-id="r1c4" style="background-image: url('Puzzle/piece_r1_c4.png');"></div>
-        <div class="piece" draggable="true" data-id="r1c5" style="background-image: url('Puzzle/piece_r1_c5.png');"></div>
-        <div class="piece" draggable="true" data-id="r1c6" style="background-image: url('Puzzle/piece_r1_c6.png');"></div>
+        <div class="piece" draggable="true" data-id="r2c1">7</div>
+        <div class="piece" draggable="true" data-id="r2c2">8</div>
+        <div class="piece" draggable="true" data-id="r2c3">9</div>
+        <div class="piece" draggable="true" data-id="r2c4">10</div>
+        <div class="piece" draggable="true" data-id="r2c5">11</div>
+        <div class="piece" draggable="true" data-id="r2c6">12</div>
 
-        <!-- ROW 2 -->
-        <div class="piece" draggable="true" data-id="r2c1" style="background-image: url('Puzzle/piece_r2_c1.png');"></div>
-        <div class="piece" draggable="true" data-id="r2c2" style="background-image: url('Puzzle/piece_r2_c2.png');"></div>
-        <div class="piece" draggable="true" data-id="r2c3" style="background-image: url('Puzzle/piece_r2_c3.png');"></div>
-        <div class="piece" draggable="true" data-id="r2c4" style="background-image: url('Puzzle/piece_r2_c4.png');"></div>
-        <div class="piece" draggable="true" data-id="r2c5" style="background-image: url('Puzzle/piece_r2_c5.png');"></div>
-        <div class="piece" draggable="true" data-id="r2c6" style="background-image: url('Puzzle/piece_r2_c6.png');"></div>
+        <div class="piece" draggable="true" data-id="r3c1">13</div>
+        <div class="piece" draggable="true" data-id="r3c2">14</div>
+        <div class="piece" draggable="true" data-id="r3c3">15</div>
+        <div class="piece" draggable="true" data-id="r3c4">16</div>
+        <div class="piece" draggable="true" data-id="r3c5">17</div>
+        <div class="piece" draggable="true" data-id="r3c6">18</div>
 
-        <!-- ROW 3 -->
-        <div class="piece" draggable="true" data-id="r3c1" style="background-image: url('Puzzle/piece_r3_c1.png');"></div>
-        <div class="piece" draggable="true" data-id="r3c2" style="background-image: url('Puzzle/piece_r3_c2.png');"></div>
-        <div class="piece" draggable="true" data-id="r3c3" style="background-image: url('Puzzle/piece_r3_c3.png');"></div>
-        <div class="piece" draggable="true" data-id="r3c4" style="background-image: url('Puzzle/piece_r3_c4.png');"></div>
-        <div class="piece" draggable="true" data-id="r3c5" style="background-image: url('Puzzle/piece_r3_c5.png');"></div>
-        <div class="piece" draggable="true" data-id="r3c6" style="background-image: url('Puzzle/piece_r3_c6.png');"></div>
-
-        <!-- ROW 4 -->
-        <div class="piece" draggable="true" data-id="r4c1" style="background-image: url('Puzzle/piece_r4_c1.png');"></div>
-        <div class="piece" draggable="true" data-id="r4c2" style="background-image: url('Puzzle/piece_r4_c2.png');"></div>
-        <div class="piece" draggable="true" data-id="r4c3" style="background-image: url('Puzzle/piece_r4_c3.png');"></div>
-        <div class="piece" draggable="true" data-id="r4c4" style="background-image: url('Puzzle/piece_r4_c4.png');"></div>
-        <div class="piece" draggable="true" data-id="r4c5" style="background-image: url('Puzzle/piece_r4_c5.png');"></div>
-        <div class="piece" draggable="true" data-id="r4c6" style="background-image: url('Puzzle/piece_r4_c6.png');"></div>
-
+        <div class="piece" draggable="true" data-id="r4c1">19</div>
+        <div class="piece" draggable="true" data-id="r4c2">20</div>
+        <div class="piece" draggable="true" data-id="r4c3">21</div>
+        <div class="piece" draggable="true" data-id="r4c4">22</div>
+        <div class="piece" draggable="true" data-id="r4c5">23</div>
+        <div class="piece" draggable="true" data-id="r4c6">24</div>
       </div>
 
       <button id="resetBtn">Reset</button>
@@ -55,7 +51,7 @@
 
     <div class="column">
       <h2>Board</h2>
-      <div class="board" id="board"></div>
+      <div id="board" class="board"></div>
     </div>
 
   </div>
