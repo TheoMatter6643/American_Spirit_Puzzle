@@ -47,24 +47,14 @@ body {
 .board {
   width: 900px;
   height: 600px;
-  display: grid;
-  grid-template-columns: repeat(6, 150px);
-  grid-template-rows: repeat(4, 150px);
-  gap: 0;
+  position: relative;
   border: 3px solid #ccc;
   background: white;
 }
 
-.board .cell {
+.cell {
   width: 150px;
   height: 150px;
   border: 1px solid #eee;
-  position: relative;
-}
-
-.board .cell .piece {
   position: absolute;
-  top: 0;
-  left: 0;
-  cursor: grab;
 }
