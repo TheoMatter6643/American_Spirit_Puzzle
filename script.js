@@ -5,6 +5,8 @@ const rows = 4;
 
 const board = document.getElementById("board");
 const piecesContainer = document.getElementById("pieces");
+const resetBtn = document.getElementById("resetBtn");
+const statusEl = document.getElementById("status");
 
 let draggedPiece = null;
 let lastX = 0;
@@ -32,7 +34,6 @@ function init() {
       draggedPiece = piece;
       piece.classList.add("dragging");
 
-      // Track speed
       lastX = e.clientX;
       lastY = e.clientY;
       lastTime = performance.now();
@@ -41,9 +42,8 @@ function init() {
     });
 
     piece.addEventListener("drag", e => {
-      if (!draggedPiece || e.clientX === 0 && e.clientY === 0) return;
+      if (!draggedPiece || (e.clientX === 0 && e.clientY === 0)) return;
 
-      // Calculate speed
       const now = performance.now();
       const dt = now - lastTime;
       const dx = e.clientX - lastX;
@@ -55,7 +55,6 @@ function init() {
       lastY = e.clientY;
       lastTime = now;
 
-      // Live snap preview only if moving slowly
       if (speed < 0.5) {
         const rect = board.getBoundingClientRect();
         const x = e.clientX - rect.left;
@@ -88,22 +87,14 @@ function init() {
     const y = e.clientY - rect.top;
 
     const snap = snapToGrid(x, y);
-    const correctId = `r${snap.row + 1}c${snap.col + 1}`;
 
-    const dx = Math.abs(snap.x - x);
-    const dy = Math.abs(snap.y - y);
-
-    const closeEnough = dx < pieceWidth / 2 && dy < pieceHeight / 2;
-
-    // Only snap if slow enough
-    if (speed < 0.5 && closeEnough && draggedPiece.dataset.id === correctId) {
+    if (speed < 0.5) {
       draggedPiece.style.position = "absolute";
       draggedPiece.style.left = snap.x + "px";
       draggedPiece.style.top = snap.y + "px";
       draggedPiece.style.zIndex = 20;
       board.appendChild(draggedPiece);
     } else {
-      // Return to sidebar
       piecesContainer.appendChild(draggedPiece);
       draggedPiece.style.position = "relative";
       draggedPiece.style.left = "0px";
@@ -115,5 +106,17 @@ function init() {
     draggedPiece = null;
   });
 }
+
+resetBtn.addEventListener("click", () => {
+  const pieces = document.querySelectorAll(".piece");
+  pieces.forEach(piece => {
+    piecesContainer.appendChild(piece);
+    piece.style.position = "relative";
+    piece.style.left = "0px";
+    piece.style.top = "0px";
+    piece.style.zIndex = 10;
+  });
+  statusEl.textContent = "";
+});
 
 init();
