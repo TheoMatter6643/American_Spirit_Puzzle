@@ -2,7 +2,8 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Square Puzzle (Snap-to-Neighbor)</title>
+  <title>Square Puzzle (Mobile)</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -13,44 +14,44 @@
   <div id="container">
 
     <div class="column">
-      <h2>Pieces</h2>
-      <div id="pieces" class="pieces">
-        <!-- 24 pieces -->
-        <div class="piece" draggable="true" data-id="r1c1">1</div>
-        <div class="piece" draggable="true" data-id="r1c2">2</div>
-        <div class="piece" draggable="true" data-id="r1c3">3</div>
-        <div class="piece" draggable="true" data-id="r1c4">4</div>
-        <div class="piece" draggable="true" data-id="r1c5">5</div>
-        <div class="piece" draggable="true" data-id="r1c6">6</div>
-
-        <div class="piece" draggable="true" data-id="r2c1">7</div>
-        <div class="piece" draggable="true" data-id="r2c2">8</div>
-        <div class="piece" draggable="true" data-id="r2c3">9</div>
-        <div class="piece" draggable="true" data-id="r2c4">10</div>
-        <div class="piece" draggable="true" data-id="r2c5">11</div>
-        <div class="piece" draggable="true" data-id="r2c6">12</div>
-
-        <div class="piece" draggable="true" data-id="r3c1">13</div>
-        <div class="piece" draggable="true" data-id="r3c2">14</div>
-        <div class="piece" draggable="true" data-id="r3c3">15</div>
-        <div class="piece" draggable="true" data-id="r3c4">16</div>
-        <div class="piece" draggable="true" data-id="r3c5">17</div>
-        <div class="piece" draggable="true" data-id="r3c6">18</div>
-
-        <div class="piece" draggable="true" data-id="r4c1">19</div>
-        <div class="piece" draggable="true" data-id="r4c2">20</div>
-        <div class="piece" draggable="true" data-id="r4c3">21</div>
-        <div class="piece" draggable="true" data-id="r4c4">22</div>
-        <div class="piece" draggable="true" data-id="r4c5">23</div>
-        <div class="piece" draggable="true" data-id="r4c6">24</div>
-      </div>
-
-      <button id="resetBtn">Reset</button>
+      <h2>Board</h2>
+      <div id="board" class="board"></div>
     </div>
 
     <div class="column">
-      <h2>Board</h2>
-      <div id="board" class="board"></div>
+      <h2>Pieces</h2>
+      <div id="pieces" class="pieces">
+        <!-- 24 pieces -->
+        <div class="piece" data-id="r1c1">1</div>
+        <div class="piece" data-id="r1c2">2</div>
+        <div class="piece" data-id="r1c3">3</div>
+        <div class="piece" data-id="r1c4">4</div>
+        <div class="piece" data-id="r1c5">5</div>
+        <div class="piece" data-id="r1c6">6</div>
+
+        <div class="piece" data-id="r2c1">7</div>
+        <div class="piece" data-id="r2c2">8</div>
+        <div class="piece" data-id="r2c3">9</div>
+        <div class="piece" data-id="r2c4">10</div>
+        <div class="piece" data-id="r2c5">11</div>
+        <div class="piece" data-id="r2c6">12</div>
+
+        <div class="piece" data-id="r3c1">13</div>
+        <div class="piece" data-id="r3c2">14</div>
+        <div class="piece" data-id="r3c3">15</div>
+        <div class="piece" data-id="r3c4">16</div>
+        <div class="piece" data-id="r3c5">17</div>
+        <div class="piece" data-id="r3c6">18</div>
+
+        <div class="piece" data-id="r4c1">19</div>
+        <div class="piece" data-id="r4c2">20</div>
+        <div class="piece" data-id="r4c3">21</div>
+        <div class="piece" data-id="r4c4">22</div>
+        <div class="piece" data-id="r4c5">23</div>
+        <div class="piece" data-id="r4c6">24</div>
+      </div>
+
+      <button id="resetBtn">Reset</button>
     </div>
 
   </div>
