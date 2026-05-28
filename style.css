@@ -55,6 +55,28 @@ body {
 .cell {
   width: 150px;
   height: 150px;
-  border: 1px solid #eee;
+  border: none;
   position: absolute;
+}
+
+/* CONFETTI CELEBRATION */
+.confetti {
+  position: fixed;
+  width: 12px;
+  height: 12px;
+  background: red;
+  top: -20px;
+  left: 50%;
+  opacity: 0.9;
+  animation: fall 1.5s linear forwards;
+  pointer-events: none;
+}
+
+@keyframes fall {
+  0% {
+    transform: translateX(0) rotate(0deg);
+  }
+  100% {
+    transform: translateX(var(--x-move)) translateY(120vh) rotate(720deg);
+  }
 }
