@@ -29,15 +29,18 @@ for (let r = 1; r <= rows; r++) {
 }
 
 function getClosestCell(x, y) {
+  const boardRect = board.getBoundingClientRect();
+  const relX = x - boardRect.left;
+  const relY = y - boardRect.top;
+
   let best = null;
   let bestDist = Infinity;
 
   cells.forEach(cell => {
-    const rect = cell.getBoundingClientRect();
-    const cx = rect.left + pieceSize / 2;
-    const cy = rect.top + pieceSize / 2;
+    const cx = (cell.dataset.col - 1) * pieceSize + pieceSize / 2;
+    const cy = (cell.dataset.row - 1) * pieceSize + pieceSize / 2;
 
-    const dist = Math.hypot(cx - x, cy - y);
+    const dist = Math.hypot(cx - relX, cy - relY);
 
     if (dist < bestDist) {
       bestDist = dist;
@@ -45,7 +48,7 @@ function getClosestCell(x, y) {
     }
   });
 
-  return bestDist < 80 ? best : null; // snap radius
+  return bestDist < 80 ? best : null;
 }
 
 function checkCorrect() {
@@ -61,8 +64,27 @@ function checkCorrect() {
 
   if (correct === rows * cols) {
     statusEl.textContent = "🎉 Correct!";
+    launchCelebration();
   } else {
     statusEl.textContent = "";
+  }
+}
+
+/* CONFETTI CELEBRATION */
+function launchCelebration() {
+  for (let i = 0; i < 60; i++) {
+    const confetti = document.createElement("div");
+    confetti.classList.add("confetti");
+
+    const colors = ["#ff4757", "#1e90ff", "#2ed573", "#ffa502", "#eccc68"];
+    confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
+
+    confetti.style.left = Math.random() * window.innerWidth + "px";
+    confetti.style.setProperty("--x-move", (Math.random() * 200 - 100) + "px");
+
+    document.body.appendChild(confetti);
+
+    setTimeout(() => confetti.remove(), 1500);
   }
 }
 
@@ -114,15 +136,15 @@ function init() {
 
       closest.appendChild(draggedPiece);
       draggedPiece.style.position = "absolute";
-      draggedPiece.style.left = "0";
-      draggedPiece.style.top = "0";
+      draggedPiece.style.left = "0px";
+      draggedPiece.style.top = "0px";
 
       checkCorrect();
     } else {
       piecesContainer.appendChild(draggedPiece);
       draggedPiece.style.position = "relative";
-      draggedPiece.style.left = "0";
-      draggedPiece.style.top = "0";
+      draggedPiece.style.left = "0px";
+      draggedPiece.style.top = "0px";
     }
 
     draggedPiece = null;
@@ -134,8 +156,8 @@ resetBtn.addEventListener("click", () => {
   pieces.forEach(piece => {
     piecesContainer.appendChild(piece);
     piece.style.position = "relative";
-    piece.style.left = "0";
-    piece.style.top = "0";
+    piece.style.left = "0px";
+    piece.style.top = "0px";
   });
   statusEl.textContent = "";
 });
