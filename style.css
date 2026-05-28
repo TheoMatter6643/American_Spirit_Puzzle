@@ -53,7 +53,7 @@ h1 {
   flex-wrap: nowrap;
   gap: 8px;
   overflow-x: auto;
-  padding: 4px 0;
+  padding: 10px;
 }
 
 .piece {
@@ -70,6 +70,7 @@ h1 {
   user-select: none;
   touch-action: none;
   border-radius: 6px;
+  padding: 10px;
 }
 
 /* Larger pieces on bigger screens */
