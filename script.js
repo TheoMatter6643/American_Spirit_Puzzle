@@ -131,16 +131,27 @@ function init() {
     const closest = getClosestCell(e.clientX, e.clientY);
 
     if (closest && speed < 0.5) {
-      const existing = closest.querySelector(".piece");
-      if (existing) piecesContainer.appendChild(existing);
 
+      // ❌ If cell already has a piece → reject
+      if (closest.querySelector(".piece")) {
+        piecesContainer.appendChild(draggedPiece);
+        draggedPiece.style.position = "relative";
+        draggedPiece.style.left = "0px";
+        draggedPiece.style.top = "0px";
+        draggedPiece = null;
+        return;
+      }
+
+      // ✔ Place piece in empty cell
       closest.appendChild(draggedPiece);
       draggedPiece.style.position = "absolute";
       draggedPiece.style.left = "0px";
       draggedPiece.style.top = "0px";
 
       checkCorrect();
+
     } else {
+      // Return to sidebar
       piecesContainer.appendChild(draggedPiece);
       draggedPiece.style.position = "relative";
       draggedPiece.style.left = "0px";
