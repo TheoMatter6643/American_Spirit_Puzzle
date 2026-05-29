@@ -12,7 +12,9 @@ let cells = [];
 let draggedPiece = null;
 let dragOffsetX = 0;
 let dragOffsetY = 0;
-let dragStartParent = null;
+
+// Map: piece -> { row, col } or null if in tray
+const piecePositions = new Map();
 
 function layoutBoard() {
   const rect = board.getBoundingClientRect();
@@ -42,6 +44,21 @@ function layoutBoard() {
       });
     }
   }
+
+  // Re-snap any pieces already on the board
+  piecePositions.forEach((pos, piece) => {
+    if (!pos) return;
+    const cell = cells.find(c => c.row === pos.row && c.col === pos.col);
+    if (cell) {
+      cell.el.appendChild(piece);
+      piece.style.position = "absolute";
+      piece.style.left = "0px";
+      piece.style.top = "0px";
+      piece.style.width = "100%";
+      piece.style.height = "100%";
+      piece.style.zIndex = 1;
+    }
+  });
 }
 
 function getClosestCell(clientX, clientY) {
@@ -109,7 +126,6 @@ function onPointerDown(e) {
   if (!target) return;
 
   draggedPiece = target;
-  dragStartParent = target.parentElement;
 
   const boardRect = board.getBoundingClientRect();
   const pieceRect = target.getBoundingClientRect();
@@ -120,7 +136,7 @@ function onPointerDown(e) {
   dragOffsetX = clientX - pieceRect.left;
   dragOffsetY = clientY - pieceRect.top;
 
-  // Move piece into board for dragging
+  // Move piece into board for dragging (visual)
   board.appendChild(draggedPiece);
   draggedPiece.style.position = "absolute";
   draggedPiece.style.width = pieceSize + "px";
@@ -160,13 +176,15 @@ function onPointerUp(e) {
   const closest = getClosestCell(clientX, clientY);
 
   if (closest && !cellOccupied(closest)) {
-    // Snap into empty cell
+    // Snap into empty cell (no overlap possible)
     closest.el.appendChild(draggedPiece);
     draggedPiece.style.left = "0px";
     draggedPiece.style.top = "0px";
     draggedPiece.style.width = "100%";
     draggedPiece.style.height = "100%";
     draggedPiece.style.zIndex = 1;
+
+    piecePositions.set(draggedPiece, { row: closest.row, col: closest.col });
     checkCorrect();
   } else {
     // Return to tray
@@ -177,10 +195,11 @@ function onPointerUp(e) {
     draggedPiece.style.width = "";
     draggedPiece.style.height = "";
     draggedPiece.style.zIndex = 1;
+
+    piecePositions.set(draggedPiece, null);
   }
 
   draggedPiece = null;
-  dragStartParent = null;
 
   window.removeEventListener("pointermove", onPointerMove);
   window.removeEventListener("pointerup", onPointerUp);
@@ -189,6 +208,7 @@ function onPointerUp(e) {
 function initPieces() {
   const pieces = document.querySelectorAll(".piece");
   pieces.forEach(piece => {
+    piecePositions.set(piece, null);
     piece.addEventListener("pointerdown", onPointerDown);
   });
 }
@@ -203,6 +223,7 @@ resetBtn.addEventListener("click", () => {
     piece.style.width = "";
     piece.style.height = "";
     piece.style.zIndex = 1;
+    piecePositions.set(piece, null);
   });
   statusEl.textContent = "";
 });
