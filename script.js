@@ -16,6 +16,9 @@ let dragOffsetY = 0;
 // Map: piece -> { row, col } or null if in tray
 const piecePositions = new Map();
 
+// Map: "rXcY" -> piece OR null
+const cellOccupancy = new Map();
+
 function layoutBoard() {
   const rect = board.getBoundingClientRect();
   pieceSize = rect.width / cols;
@@ -24,6 +27,7 @@ function layoutBoard() {
   // Clear old cells
   cells.forEach(c => c.el.remove());
   cells = [];
+  cellOccupancy.clear();
 
   for (let r = 1; r <= rows; r++) {
     for (let c = 1; c <= cols; c++) {
@@ -37,10 +41,14 @@ function layoutBoard() {
       cell.dataset.col = c;
       board.appendChild(cell);
 
+      const key = `r${r}c${c}`;
+      cellOccupancy.set(key, null);
+
       cells.push({
         el: cell,
         row: r,
-        col: c
+        col: c,
+        key
       });
     }
   }
@@ -57,6 +65,8 @@ function layoutBoard() {
       piece.style.width = "100%";
       piece.style.height = "100%";
       piece.style.zIndex = 1;
+
+      cellOccupancy.set(cell.key, piece);
     }
   });
 }
@@ -83,15 +93,11 @@ function getClosestCell(clientX, clientY) {
   return bestDist < snapRadius ? best : null;
 }
 
-function cellOccupied(cell) {
-  return cell.el.querySelector(".piece") !== null;
-}
-
 function checkCorrect() {
   let correct = 0;
 
   cells.forEach(cell => {
-    const piece = cell.el.querySelector(".piece");
+    const piece = cellOccupancy.get(cell.key);
     if (!piece) return;
     const correctId = `r${cell.row}c${cell.col}`;
     if (piece.dataset.id === correctId) correct++;
@@ -127,7 +133,6 @@ function onPointerDown(e) {
 
   draggedPiece = target;
 
-  const boardRect = board.getBoundingClientRect();
   const pieceRect = target.getBoundingClientRect();
 
   const clientX = e.clientX ?? e.touches?.[0]?.clientX;
@@ -136,25 +141,23 @@ function onPointerDown(e) {
   dragOffsetX = clientX - pieceRect.left;
   dragOffsetY = clientY - pieceRect.top;
 
-  // Move piece into board for dragging (visual)
-  board.appendChild(draggedPiece);
-  draggedPiece.style.position = "absolute";
+  // Remove from occupancy map if it was in a cell
+  const oldPos = piecePositions.get(draggedPiece);
+  if (oldPos) {
+    const oldKey = `r${oldPos.row}c${oldPos.col}`;
+    cellOccupancy.set(oldKey, null);
+  }
+
+  // Float above everything
+  draggedPiece.style.position = "fixed";
+  draggedPiece.style.left = pieceRect.left + "px";
+  draggedPiece.style.top = pieceRect.top + "px";
   draggedPiece.style.width = pieceSize + "px";
   draggedPiece.style.height = pieceSize + "px";
-  draggedPiece.style.zIndex = 1000;
-
-  moveDraggedPiece(clientX, clientY, boardRect);
+  draggedPiece.style.zIndex = 9999;
 
   window.addEventListener("pointermove", onPointerMove, { passive: false });
   window.addEventListener("pointerup", onPointerUp);
-}
-
-function moveDraggedPiece(clientX, clientY, boardRect = board.getBoundingClientRect()) {
-  const x = clientX - boardRect.left - dragOffsetX;
-  const y = clientY - boardRect.top - dragOffsetY;
-
-  draggedPiece.style.left = x + "px";
-  draggedPiece.style.top = y + "px";
 }
 
 function onPointerMove(e) {
@@ -164,7 +167,8 @@ function onPointerMove(e) {
   const clientX = e.clientX ?? e.touches?.[0]?.clientX;
   const clientY = e.clientY ?? e.touches?.[0]?.clientY;
 
-  moveDraggedPiece(clientX, clientY);
+  draggedPiece.style.left = clientX - dragOffsetX + "px";
+  draggedPiece.style.top = clientY - dragOffsetY + "px";
 }
 
 function onPointerUp(e) {
@@ -175,19 +179,36 @@ function onPointerUp(e) {
 
   const closest = getClosestCell(clientX, clientY);
 
-  if (closest && !cellOccupied(closest)) {
-    // Snap into empty cell (no overlap possible)
-    closest.el.appendChild(draggedPiece);
-    draggedPiece.style.left = "0px";
-    draggedPiece.style.top = "0px";
-    draggedPiece.style.width = "100%";
-    draggedPiece.style.height = "100%";
-    draggedPiece.style.zIndex = 1;
+  if (closest) {
+    // ⭐ CHECK OCCUPANCY USING THE MAP (fixes overlap)
+    if (cellOccupancy.get(closest.key) === null) {
+      // Snap into empty cell
+      closest.el.appendChild(draggedPiece);
+      draggedPiece.style.position = "absolute";
+      draggedPiece.style.left = "0px";
+      draggedPiece.style.top = "0px";
+      draggedPiece.style.width = "100%";
+      draggedPiece.style.height = "100%";
+      draggedPiece.style.zIndex = 1;
 
-    piecePositions.set(draggedPiece, { row: closest.row, col: closest.col });
-    checkCorrect();
+      piecePositions.set(draggedPiece, { row: closest.row, col: closest.col });
+      cellOccupancy.set(closest.key, draggedPiece);
+
+      checkCorrect();
+    } else {
+      // Cell is occupied → return to tray
+      piecesContainer.appendChild(draggedPiece);
+      draggedPiece.style.position = "relative";
+      draggedPiece.style.left = "0px";
+      draggedPiece.style.top = "0px";
+      draggedPiece.style.width = "";
+      draggedPiece.style.height = "";
+      draggedPiece.style.zIndex = 1;
+
+      piecePositions.set(draggedPiece, null);
+    }
   } else {
-    // Return to tray
+    // Not near any cell → return to tray
     piecesContainer.appendChild(draggedPiece);
     draggedPiece.style.position = "relative";
     draggedPiece.style.left = "0px";
@@ -225,6 +246,10 @@ resetBtn.addEventListener("click", () => {
     piece.style.zIndex = 1;
     piecePositions.set(piece, null);
   });
+
+  // Reset occupancy
+  cells.forEach(cell => cellOccupancy.set(cell.key, null));
+
   statusEl.textContent = "";
 });
 
