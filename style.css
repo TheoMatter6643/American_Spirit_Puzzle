@@ -46,6 +46,7 @@ h1 {
   position: absolute;
   box-sizing: border-box;
   border: none;
+  margin: 5px;
 }
 
 .pieces {
@@ -69,7 +70,6 @@ h1 {
   cursor: grab;
   user-select: none;
   touch-action: none;
-  border-radius: 6px;
 }
 
 /* Larger pieces on bigger screens */
