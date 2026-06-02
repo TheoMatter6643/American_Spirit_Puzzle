@@ -2,7 +2,6 @@ const CACHE_NAME = "puzzle-cache-v1";
 
 const FILES_TO_CACHE = [
   "Puzzle/piece_r1_c1.png",
-  "Puzzle/piece_r2_c2.png",
   "index.html",
   "style.css",
   "script.js",
