@@ -11,10 +11,5 @@
       "sizes": "150x127",
       "type": "image/png"
     },
-    {
-      "src": "Puzzle/piece_r2_c2.png",
-      "sizes": "150x125",
-      "type": "image/png"
-    }
   ]
 }
