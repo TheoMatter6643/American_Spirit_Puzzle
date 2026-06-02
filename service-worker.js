@@ -5,8 +5,8 @@ const FILES_TO_CACHE = [
   "style.css",
   "script.js",
   "manifest.json",
-  "icon-192.png",
-  "icon-512.png"
+  "Puzzle/piece_r1_c1.png",
+  "Puzzle/piece_r2_c2.png"
 ];
 
 // Install: cache everything
