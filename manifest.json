@@ -1,8 +1,6 @@
-{
   "name": "Square Puzzle",
   "short_name": "Puzzle",
   "start_url": "index.html",
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#ffffff",
-}
