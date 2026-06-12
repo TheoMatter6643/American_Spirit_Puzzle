@@ -7,12 +7,10 @@ const FILES_TO_CACHE = [
   "manifest.json"
 ];
 
-// Install: cache everything
+// Install: cache core files
 self.addEventListener("install", event => {
   event.waitUntil(
-    caches.open(CACHE_NAME).then(cache => {
-      return cache.addAll(FILES_TO_CACHE);
-    })
+    caches.open(CACHE_NAME).then(cache => cache.addAll(FILES_TO_CACHE))
   );
   self.skipWaiting();
 });
@@ -23,7 +21,9 @@ self.addEventListener("activate", event => {
     caches.keys().then(keys =>
       Promise.all(
         keys.map(key => {
-          if (key !== CACHE_NAME) return caches.delete(key);
+          if (key !== CACHE_NAME) {
+            return caches.delete(key);
+          }
         })
       )
     )
@@ -31,7 +31,7 @@ self.addEventListener("activate", event => {
   self.clients.claim();
 });
 
-// Fetch: serve from cache first
+// Fetch: cache-first, then network
 self.addEventListener("fetch", event => {
   event.respondWith(
     caches.match(event.request).then(response => {
