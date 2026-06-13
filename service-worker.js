@@ -5,6 +5,7 @@ const FILES_TO_CACHE = [
   "style.css",
   "script.js",
   "manifest.json"
+  "Puzzle/piece_r1_c1.png"
 ];
 
 // Install: cache core files
