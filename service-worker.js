@@ -4,7 +4,7 @@ const FILES_TO_CACHE = [
   "index.html",
   "style.css",
   "script.js",
-  "manifest.json"
+  "manifest.json",
   "Puzzle/piece_r1_c1.png"
 ];
 
