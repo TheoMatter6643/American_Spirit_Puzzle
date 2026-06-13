@@ -4,5 +4,12 @@
   "start_url": "index.html",
   "display": "standalone",
   "background_color": "#ffffff",
-  "theme_color": "#ffffff"
+  "theme_color": "#ffffff",
+  "icons": [
+    {
+      "src": "piece_r1_c1.png",
+      "sizes": "150x127",
+      "type": "image/png"
+    }
+  ]
 }
