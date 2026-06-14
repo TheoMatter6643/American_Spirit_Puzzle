@@ -44,6 +44,8 @@ function onDown(e) {
 
   piecesContainer.style.pointerEvents = "none";
 
+  document.body.appendChild(t);
+
   t.style.position = "fixed";
   t.style.zIndex = "9999";
   t.style.pointerEvents = "none";
