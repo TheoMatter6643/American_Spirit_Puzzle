@@ -4,7 +4,8 @@ const board = document.getElementById("board");
 const piecesContainer = document.getElementById("pieces");
 const statusDiv = document.getElementById("status");
 let cells = [];
-let activePiece = null;
+let activePiece = null;  // the real piece (hidden during drag)
+let dragClone = null;    // the visual clone following the finger
 let offsetX = 0;
 let offsetY = 0;
 
@@ -34,64 +35,93 @@ function onDown(e) {
   if (!t.classList.contains("piece")) return;
   e.preventDefault();
   activePiece = t;
+
   const rect = t.getBoundingClientRect();
   offsetX = e.clientX - rect.left;
   offsetY = e.clientY - rect.top;
-  document.body.appendChild(t);
-  t.style.position = "fixed";
-  t.style.zIndex = "9999";
-  t.style.pointerEvents = "none";
-  // Capture pointer so mobile doesn't lose track of the drag
-  t.setPointerCapture(e.pointerId);
-  movePiece(e.clientX, e.clientY);
+
+  // Create a floating clone to follow the finger
+  dragClone = t.cloneNode(true);
+  dragClone.style.position = "fixed";
+  dragClone.style.zIndex = "9999";
+  dragClone.style.pointerEvents = "none";
+  dragClone.style.width = rect.width + "px";
+  dragClone.style.height = rect.height + "px";
+  dragClone.style.opacity = "0.85";
+  document.body.appendChild(dragClone);
+
+  // Hide the original in place so drop target detection works
+  activePiece.style.visibility = "hidden";
+
+  moveClone(e.clientX, e.clientY);
 }
 
-function movePiece(x, y) {
-  if (!activePiece) return;
-  activePiece.style.left = x - offsetX + "px";
-  activePiece.style.top = y - offsetY + "px";
+function moveClone(x, y) {
+  if (!dragClone) return;
+  dragClone.style.left = x - offsetX + "px";
+  dragClone.style.top = y - offsetY + "px";
 }
 
 function onMove(e) {
   if (!activePiece) return;
   e.preventDefault();
-  movePiece(e.clientX, e.clientY);
+  moveClone(e.clientX, e.clientY);
 }
 
 function getDropTarget(x, y) {
-  // Temporarily show piece so elementFromPoint works correctly
-  activePiece.style.display = "none";
   const el = document.elementFromPoint(x, y);
-  activePiece.style.display = "";
   if (!el) return null;
   if (el.classList.contains("cell")) return el;
   if (el.id === "pieces" || el.classList.contains("pieces")) return piecesContainer;
+  // Check parent in case finger lands on a piece inside a cell
+  if (el.classList.contains("piece") && el.parentElement.classList.contains("cell")) {
+    return el.parentElement;
+  }
   return null;
 }
 
 function onUp(e) {
   if (!activePiece) return;
+
+  // Remove the clone
+  if (dragClone) {
+    dragClone.remove();
+    dragClone = null;
+  }
+
+  activePiece.style.visibility = "";
+
   const dropTarget = getDropTarget(e.clientX, e.clientY);
-  activePiece.style.position = "";
-  activePiece.style.left = "";
-  activePiece.style.top = "";
-  activePiece.style.zIndex = "";
-  activePiece.style.pointerEvents = "";
+
   if (dropTarget && dropTarget.classList.contains("cell")) {
-    dropTarget.innerHTML = "";
+    // If cell has a piece already, send it back to tray
+    if (dropTarget.children.length > 0) {
+      const existing = dropTarget.children[0];
+      existing.style.visibility = "";
+      piecesContainer.appendChild(existing);
+    }
     dropTarget.appendChild(activePiece);
   } else {
+    // Return to tray
+    activePiece.style.visibility = "";
     piecesContainer.appendChild(activePiece);
   }
+
   activePiece = null;
   checkWin();
 }
 
 function attachHandlers() {
+  // Remove old listeners to avoid duplicates on reset
+  document.removeEventListener("pointermove", onMove);
+  document.removeEventListener("pointerup", onUp);
+
   const pieces = document.querySelectorAll(".piece");
   pieces.forEach(p => {
+    p.removeEventListener("pointerdown", onDown);
     p.addEventListener("pointerdown", onDown);
   });
+
   document.addEventListener("pointermove", onMove, { passive: false });
   document.addEventListener("pointerup", onUp);
 }
@@ -114,13 +144,11 @@ function checkWin() {
 }
 
 document.getElementById("resetBtn").addEventListener("click", () => {
+  if (dragClone) { dragClone.remove(); dragClone = null; }
   const allPieces = Array.from(document.querySelectorAll(".piece"));
   piecesContainer.innerHTML = "";
   allPieces.forEach(p => {
-    p.style.position = "";
-    p.style.left = "";
-    p.style.top = "";
-    p.style.zIndex = "";
+    p.style.cssText = "";
     piecesContainer.appendChild(p);
   });
   createBoard();
