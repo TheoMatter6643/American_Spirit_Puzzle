@@ -33,6 +33,7 @@
   aspect-ratio: 3 / 2;
   width: 600px;
   max-width: none;
+  touch-action: none;
 }
 
 .pieces {
@@ -48,6 +49,7 @@
   background-size: cover;
   background-position: center;
   border-radius: 4px;
+  pointer-events: auto;
 }
 
 @media (max-width: 600px) {
