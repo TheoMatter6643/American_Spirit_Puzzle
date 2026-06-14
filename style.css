@@ -79,6 +79,29 @@ h1 {
     font-size: 28px;
   }
 }
+.board-wrapper {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: start;
+  gap: 8px;
+}
+
+.row-labels {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+  font-size: 20px;
+  font-weight: bold;
+  padding-top: 4px;
+}
+
+.row-labels div {
+  height: calc(25% - 5px); /* 4 rows */
+  display: flex;
+  align-items: center;
+}
+
 
 button {
   padding: 8px 14px;
