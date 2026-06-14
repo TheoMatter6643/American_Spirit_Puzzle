@@ -9,7 +9,8 @@ const FILES_TO_CACHE = [
   "./Assets/2.png",
   "./Assets/3.png",
   "./Assets/4.png",
-  "./Assets/5.png"
+  "./Assets/5.png",
+  "./Assets/6.png"
 ];
 
 // Install: cache core files
