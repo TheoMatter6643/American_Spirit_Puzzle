@@ -35,6 +35,11 @@
     "src": "Assets/5.png",
     "sizes": "150x150",
     "type": "image/png"
+    },
+    {
+      "src": "Assets/6.png",
+      "sizes": "150x150",
+      "type": "image/png"
     }
   ]
 }
