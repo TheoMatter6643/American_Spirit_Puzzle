@@ -1,85 +1,120 @@
-// --- CONFIG ---
 const rows = 4;
 const cols = 6;
 
-// Build the board grid
 const board = document.getElementById("board");
 const piecesContainer = document.getElementById("pieces");
 const statusDiv = document.getElementById("status");
 
 let cells = [];
-let draggedPiece = null;
+let activePiece = null;
+let originalParent = null;
 
-// Assign correct groups for each cell (you can customize this)
 const cellGroups = [
-  [1,1,1,1,1,2],   // row 1
-  [3,3,3,3,3,4],   // row 2
-  [4,4,4,4,5,5],   // row 3
-  [5,5,5,5,5,5]    // row 4
+  [1,1,1,1,1,2],
+  [3,3,3,3,3,4],
+  [4,4,4,4,5,5],
+  [5,5,5,5,5,5]
 ];
 
-// Build board cells
 function createBoard() {
   board.innerHTML = "";
   cells = [];
 
   for (let r = 0; r < rows; r++) {
     for (let c = 0; c < cols; c++) {
-
       const cell = document.createElement("div");
       cell.classList.add("cell");
-
       cell.dataset.row = r + 1;
       cell.dataset.col = c + 1;
-
       cell.correctGroup = cellGroups[r][c];
-
       board.appendChild(cell);
       cells.push(cell);
     }
   }
 }
 
-// Drag start
-document.addEventListener("dragstart", (e) => {
-  if (e.target.classList.contains("piece")) {
-    draggedPiece = e.target;
-    e.dataTransfer.setData("text/plain", "");
+function onPointerDown(e) {
+  const target = e.target;
+  if (!target.classList.contains("piece")) return;
+
+  activePiece = target;
+  originalParent = target.parentElement;
+
+  activePiece.setPointerCapture(e.pointerId);
+  activePiece.dataset.startX = e.clientX;
+  activePiece.dataset.startY = e.clientY;
+  activePiece.dataset.origLeft = activePiece.offsetLeft;
+  activePiece.dataset.origTop = activePiece.offsetTop;
+
+  activePiece.style.position = "absolute";
+  activePiece.style.zIndex = "1000";
+}
+
+function onPointerMove(e) {
+  if (!activePiece) return;
+
+  const startX = parseFloat(activePiece.dataset.startX);
+  const startY = parseFloat(activePiece.dataset.startY);
+  const origLeft = parseFloat(activePiece.dataset.origLeft);
+  const origTop = parseFloat(activePiece.dataset.origTop);
+
+  const dx = e.clientX - startX;
+  const dy = e.clientY - startY;
+
+  activePiece.style.left = origLeft + dx + "px";
+  activePiece.style.top = origTop + dy + "px";
+}
+
+function getDropTarget(x, y) {
+  const el = document.elementFromPoint(x, y);
+  if (!el) return null;
+  if (el.classList.contains("cell")) return el;
+  if (el.id === "pieces" || el.classList.contains("pieces")) return piecesContainer;
+  return null;
+}
+
+function onPointerUp(e) {
+  if (!activePiece) return;
+
+  const dropTarget = getDropTarget(e.clientX, e.clientY);
+
+  activePiece.style.position = "";
+  activePiece.style.left = "";
+  activePiece.style.top = "";
+  activePiece.style.zIndex = "";
+
+  if (dropTarget && dropTarget.classList.contains("cell")) {
+    dropTarget.innerHTML = "";
+    dropTarget.appendChild(activePiece);
+  } else if (dropTarget === piecesContainer) {
+    piecesContainer.appendChild(activePiece);
+  } else {
+    originalParent.appendChild(activePiece);
   }
-});
 
-// Allow drop
-document.addEventListener("dragover", (e) => {
-  if (e.target.classList.contains("cell") || e.target.classList.contains("pieces")) {
-    e.preventDefault();
-  }
-});
+  activePiece.releasePointerCapture(e.pointerId);
+  activePiece = null;
+  originalParent = null;
 
-// Drop logic
-document.addEventListener("drop", (e) => {
-  if (!draggedPiece) return;
-
-  if (e.target.classList.contains("cell")) {
-    e.target.innerHTML = "";
-    e.target.appendChild(draggedPiece);
-  }
-
-  if (e.target.classList.contains("pieces")) {
-    piecesContainer.appendChild(draggedPiece);
-  }
-
-  draggedPiece = null;
   checkWin();
-});
+}
 
-// Check if puzzle is solved
+function attachPieceHandlers() {
+  const pieces = document.querySelectorAll(".piece");
+  pieces.forEach(p => {
+    p.addEventListener("pointerdown", onPointerDown);
+    p.addEventListener("pointermove", onPointerMove);
+    p.addEventListener("pointerup", onPointerUp);
+    p.addEventListener("pointercancel", onPointerUp);
+  });
+}
+
 function checkWin() {
   let correct = 0;
 
   cells.forEach(cell => {
     if (cell.children.length === 1) {
       const piece = cell.children[0];
-
       if (piece.dataset.group == cell.correctGroup) {
         correct++;
       }
@@ -93,13 +128,20 @@ function checkWin() {
   }
 }
 
-// Reset button
 document.getElementById("resetBtn").addEventListener("click", () => {
+  const allPieces = Array.from(document.querySelectorAll(".piece"));
   piecesContainer.innerHTML = "";
-  document.querySelectorAll(".piece").forEach(p => piecesContainer.appendChild(p));
+  allPieces.forEach(p => {
+    p.style.position = "";
+    p.style.left = "";
+    p.style.top = "";
+    p.style.zIndex = "";
+    piecesContainer.appendChild(p);
+  });
   createBoard();
   statusDiv.textContent = "";
+  attachPieceHandlers();
 });
 
-// Initialize
 createBoard();
+attachPieceHandlers();
