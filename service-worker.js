@@ -5,6 +5,11 @@ const FILES_TO_CACHE = [
   "./script.js",
   "./manifest.json",
   "./Puzzle/piece_r1_c1.png"
+  "./Assets/1.png"
+  "./Assets/2.png"
+  "./Assets/3.png"
+  "./Assets/4.png"
+  "./Assets/5.png"
 ];
 
 // Install: cache core files
