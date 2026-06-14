@@ -46,23 +46,18 @@ function onPointerDown(e) {
   activePiece.dataset.origLeft = activePiece.offsetLeft;
   activePiece.dataset.origTop = activePiece.offsetTop;
 
-  activePiece.style.position = "absolute";
-  activePiece.style.zIndex = "1000";
+  activePiece.style.position = "fixed";
+  activePiece.style.left = e.clientX - activePiece.offsetWidth / 2 + "px";
+  activePiece.style.top = e.clientY - activePiece.offsetHeight / 2 + "px";
+  activePiece.style.zIndex = "9999";
+  activePiece.style.pointerEvents = "none";
 }
 
 function onPointerMove(e) {
   if (!activePiece) return;
 
-  const startX = parseFloat(activePiece.dataset.startX);
-  const startY = parseFloat(activePiece.dataset.startY);
-  const origLeft = parseFloat(activePiece.dataset.origLeft);
-  const origTop = parseFloat(activePiece.dataset.origTop);
-
-  const dx = e.clientX - startX;
-  const dy = e.clientY - startY;
-
-  activePiece.style.left = origLeft + dx + "px";
-  activePiece.style.top = origTop + dy + "px";
+  activePiece.style.left = e.clientX - activePiece.offsetWidth / 2 + "px";
+  activePiece.style.top = e.clientY - activePiece.offsetHeight / 2 + "px";
 }
 
 function getDropTarget(x, y) {
@@ -82,6 +77,7 @@ function onPointerUp(e) {
   activePiece.style.left = "";
   activePiece.style.top = "";
   activePiece.style.zIndex = "";
+  activePiece.style.pointerEvents = "";
 
   if (dropTarget && dropTarget.classList.contains("cell")) {
     dropTarget.innerHTML = "";
