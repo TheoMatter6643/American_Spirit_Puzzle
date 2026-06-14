@@ -7,7 +7,8 @@ const statusDiv = document.getElementById("status");
 
 let cells = [];
 let activePiece = null;
-let originalParent = null;
+let offsetX = 0;
+let offsetY = 0;
 
 const cellGroups = [
   [1,1,1,1,1,2],
@@ -24,8 +25,6 @@ function createBoard() {
     for (let c = 0; c < cols; c++) {
       const cell = document.createElement("div");
       cell.classList.add("cell");
-      cell.dataset.row = r + 1;
-      cell.dataset.col = c + 1;
       cell.correctGroup = cellGroups[r][c];
       board.appendChild(cell);
       cells.push(cell);
@@ -33,31 +32,32 @@ function createBoard() {
   }
 }
 
-function onPointerDown(e) {
-  const target = e.target;
-  if (!target.classList.contains("piece")) return;
+function onDown(e) {
+  const t = e.target;
+  if (!t.classList.contains("piece")) return;
 
-  activePiece = target;
-  originalParent = target.parentElement;
+  activePiece = t;
 
-  activePiece.setPointerCapture(e.pointerId);
-  activePiece.dataset.startX = e.clientX;
-  activePiece.dataset.startY = e.clientY;
-  activePiece.dataset.origLeft = activePiece.offsetLeft;
-  activePiece.dataset.origTop = activePiece.offsetTop;
+  const rect = t.getBoundingClientRect();
+  offsetX = e.clientX - rect.left;
+  offsetY = e.clientY - rect.top;
 
-  activePiece.style.position = "fixed";
-  activePiece.style.left = e.clientX - activePiece.offsetWidth / 2 + "px";
-  activePiece.style.top = e.clientY - activePiece.offsetHeight / 2 + "px";
-  activePiece.style.zIndex = "9999";
-  activePiece.style.pointerEvents = "none";
+  t.style.position = "fixed";
+  t.style.zIndex = "9999";
+  t.style.pointerEvents = "none";
+
+  movePiece(e.clientX, e.clientY);
 }
 
-function onPointerMove(e) {
+function movePiece(x, y) {
   if (!activePiece) return;
+  activePiece.style.left = x - offsetX + "px";
+  activePiece.style.top = y - offsetY + "px";
+}
 
-  activePiece.style.left = e.clientX - activePiece.offsetWidth / 2 + "px";
-  activePiece.style.top = e.clientY - activePiece.offsetHeight / 2 + "px";
+function onMove(e) {
+  if (!activePiece) return;
+  movePiece(e.clientX, e.clientY);
 }
 
 function getDropTarget(x, y) {
@@ -68,7 +68,7 @@ function getDropTarget(x, y) {
   return null;
 }
 
-function onPointerUp(e) {
+function onUp(e) {
   if (!activePiece) return;
 
   const dropTarget = getDropTarget(e.clientX, e.clientY);
@@ -85,24 +85,21 @@ function onPointerUp(e) {
   } else if (dropTarget === piecesContainer) {
     piecesContainer.appendChild(activePiece);
   } else {
-    originalParent.appendChild(activePiece);
+    piecesContainer.appendChild(activePiece);
   }
 
-  activePiece.releasePointerCapture(e.pointerId);
   activePiece = null;
-  originalParent = null;
-
   checkWin();
 }
 
-function attachPieceHandlers() {
+function attachHandlers() {
   const pieces = document.querySelectorAll(".piece");
   pieces.forEach(p => {
-    p.addEventListener("pointerdown", onPointerDown);
-    p.addEventListener("pointermove", onPointerMove);
-    p.addEventListener("pointerup", onPointerUp);
-    p.addEventListener("pointercancel", onPointerUp);
+    p.addEventListener("pointerdown", onDown);
   });
+
+  document.addEventListener("pointermove", onMove);
+  document.addEventListener("pointerup", onUp);
 }
 
 function checkWin() {
@@ -136,8 +133,8 @@ document.getElementById("resetBtn").addEventListener("click", () => {
   });
   createBoard();
   statusDiv.textContent = "";
-  attachPieceHandlers();
+  attachHandlers();
 });
 
 createBoard();
-attachPieceHandlers();
+attachHandlers();
