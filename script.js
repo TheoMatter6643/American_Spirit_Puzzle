@@ -42,6 +42,8 @@ function onDown(e) {
   offsetX = e.clientX - rect.left;
   offsetY = e.clientY - rect.top;
 
+  piecesContainer.style.pointerEvents = "none";
+
   t.style.position = "fixed";
   t.style.zIndex = "9999";
   t.style.pointerEvents = "none";
@@ -70,6 +72,8 @@ function getDropTarget(x, y) {
 
 function onUp(e) {
   if (!activePiece) return;
+
+  piecesContainer.style.pointerEvents = "";
 
   const dropTarget = getDropTarget(e.clientX, e.clientY);
 
